@@ -6,11 +6,15 @@
 var drawingCanvas;
 var saveButton;
 var brushPicker;
+var clearButton;
+
+
 
 //values saved from html elements
 var colorPicker;
 var brushSize;
 var brushType;
+
 
 
 function setup() {
@@ -33,12 +37,23 @@ function setup() {
 
     //TASK: set up the clear button
 
+    clearButton = select('.clearButton');
+    clearButton.mouseClicked(clearFunction);
+
 
     //set up the brush types
     brushPicker = createSelect();
     brushPicker.parent("brushType")
 
     brushPicker.option('paint brush');
+    brushPicker.option('black');
+    brushPicker.option('white');
+    brushPicker.option('paint bucket');
+    brushPicker.option('eraser');
+
+
+
+
     //TASK: add paint bucket option
     //TASK: add eraser option
     //TASK: add two new brush options
@@ -58,7 +73,18 @@ function draw() {
             standardStroke();
         }
         //add your other brush options here using else if
-
+        if (brushType == "paint bucket"){
+            paintbucketFunction();
+        }
+        if (brushType == "eraser"){
+            eraserFunction();
+        }
+        if (brushType == "black"){
+            blackStroke();
+        }
+        if (brushType == "white"){
+            whiteStroke();
+        }
     } else {
         //Cursor options: ARROW, CROSS, HAND, MOVE, TEXT, or WAIT, or path for image
         //if you use an image, the recommended size is 16x16 or 32x32 pixels
@@ -88,6 +114,21 @@ function standardStroke(){
 
 }
 
+  function blackStroke(){
+
+    strokeWeight(brushSize.value());
+    stroke("black");
+    line(pmouseX, pmouseY, mouseX, mouseY);
+}
+
+function whiteStroke(){
+
+  strokeWeight(brushSize.value());
+  stroke("white");
+  line(pmouseX, pmouseY, mouseX, mouseY);
+}
+
+
 //TASK: set up a paint bucket, eraser, and two new brushes
 //each one should have its own function
 
@@ -107,3 +148,21 @@ function saveFunction() {
 }
 
 //TASK: set up clear button function
+function clearFunction() {
+    clear(drawingCanvas);
+    background("white");
+
+
+}
+
+function paintbucketFunction() {
+    background("#"+colorPicker.value());
+
+}
+
+function eraserFunction() {
+  strokeWeight(brushSize.value());
+  stroke("white");
+  line(pmouseX, pmouseY, mouseX, mouseY);
+
+}
